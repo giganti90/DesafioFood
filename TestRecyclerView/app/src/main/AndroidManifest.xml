@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestRecyclerView">
+        <activity android:name=".model.PratoActivity"></activity>
+        <activity android:name=".model.ActivityRestaurante" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

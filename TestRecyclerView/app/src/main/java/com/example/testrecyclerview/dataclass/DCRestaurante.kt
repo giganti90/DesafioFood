@@ -1,9 +1,11 @@
 package com.example.testrecyclerview.dataclass
 
+import java.io.Serializable
+
 data class DCRestaurante(val nameRestaurante: String,
                          val detalhesRestaurante: String,
                          val horarioRestaurante: String,
-                         val imgRestaurant: Int) {
+                         val imgRestaurant: Int) : Serializable
 
 //    companion object {
 //
@@ -22,4 +24,3 @@ data class DCRestaurante(val nameRestaurante: String,
 //            return listaRestaurante.toList()
 //        }
 //    }
-}

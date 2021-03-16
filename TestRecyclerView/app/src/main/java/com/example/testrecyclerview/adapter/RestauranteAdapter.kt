@@ -1,50 +1,63 @@
 package com.example.testrecyclerview.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.R
-import com.example.testrecyclerview.adapter.viewholder.VHRestaurante
 import com.example.testrecyclerview.dataclass.DCRestaurante
-import com.example.testrecyclerview.model.Restaurante
+import com.example.testrecyclerview.model.ActivityRestaurante
 
-class RestauranteAdapter (private val restaurantesList: MutableList<DCRestaurante>)
-    : RecyclerView.Adapter<VHRestaurante>() {
+class RestauranteAdapter (val restauranteList: MutableList<DCRestaurante>, val context: Context)
+    : RecyclerView.Adapter<RestauranteAdapter.VHRestaurante>() {
 
+    val activityRestaurante = ActivityRestaurante()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHRestaurante {
-        val view = LayoutInflater.from(parent.context).inflate((R.layout.restaurante_list), parent, false)
-        return VHRestaurante(view)
-    }
+    inner class VHRestaurante(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    override fun getItemCount(): Int {
-        return restaurantesList.size
-    }
+        val nameRestaurante = itemView.findViewById<TextView>(R.id.tv_name_restaurant)
+        val detalhesRestaurante =  itemView.findViewById<TextView>(R.id.tv_address_restaurant)
+        val horarioRestaurante = itemView.findViewById<TextView>(R.id.tv_hour_restaurant)
+        val imgRestaurant = itemView.findViewById<ImageView>(R.id.img_restaurant)
 
-
-    override fun onBindViewHolder(holder: VHRestaurante, position: Int) {
-        val nome = holder.nameRestaurante
-        nome.text = restaurantesList[position].nameRestaurante
-
-        val endereco = holder.detalhesRestaurante
-        endereco.text = restaurantesList[position].detalhesRestaurante
-
-        val horario = holder.horarioRestaurante
-        horario.text = restaurantesList[position].horarioRestaurante
-
-        val imagem = holder.imgRestaurant
-        imagem.setImageResource(restaurantesList[position].imgRestaurant)
-
-        holder.itemView.setOnClickListener {
-            val intent = Intent(it.context, Restaurante::class.java)
-            it.context.startActivity(intent)
+        fun bindItems(restaurants: DCRestaurante) {
+            nameRestaurante.text = restaurants.nameRestaurante
+            detalhesRestaurante.text = restaurants.detalhesRestaurante
+            horarioRestaurante.text = restaurants.horarioRestaurante
+            imgRestaurant.setImageResource(restaurants.imgRestaurant)
         }
     }
+
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHRestaurante {
+            val view = LayoutInflater.from(parent.context).inflate((R.layout.restaurante_list), parent, false)
+            return VHRestaurante(view)
+        }
+
+        override fun getItemCount(): Int {
+            return restauranteList.size
+        }
+
+
+        override fun onBindViewHolder(holder: VHRestaurante, position: Int) {
+            holder.bindItems(restauranteList[position])
+
+            holder.imgRestaurant.setOnClickListener {
+                val intent = Intent(it.context, DCRestaurante::class.java)
+                intent.putExtra("nomerestaurante", restauranteList[position].nameRestaurante)
+                intent.putExtra("descrição", restauranteList[position].detalhesRestaurante)
+                intent.putExtra("horario", restauranteList[position].horarioRestaurante)
+                intent.putExtra("imagem", restauranteList[position].imgRestaurant)
+                it.context.startActivity(intent)
+            }
+        }
+
 }
+
 
 //    override fun onBindViewHolder(holder: ViewHolderRestaurante, position: Int) {
 //        holder.makeRestaurante(restaurantesList[position])
